@@ -1,0 +1,5 @@
+#!/bin/sh
+
+export root=$(git rev-parse --show-toplevel)
+
+$root/update-submodules $root $(git rev-parse HEAD)

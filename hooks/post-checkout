@@ -1,0 +1,8 @@
+#!/bin/sh
+
+export root=$(git rev-parse --show-toplevel)
+
+# if we're checking out a branch and not a file
+if [ $3 = 1 ]; then
+    $root/update-submodules $root $2
+fi

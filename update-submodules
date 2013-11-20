@@ -1,0 +1,21 @@
+#!/bin/sh
+
+export root=$1
+export root_sha=$2
+
+exec git submodule foreach '
+    branch=$(git config -f $root/.gitmodules submodule.$name.branch)
+    old_sub_sha=$(git show-ref --hash origin/$branch)
+    cd $root
+    new_sub_commit=$(git ls-tree --full-tree -r $root_sha $name)
+    cd $name
+    git checkout $branch
+    case $new_sub_commit in
+        *$old_sub_sha*)
+            ;;
+        *)
+            git pull origin $branch
+            ;;
+    esac'
+
+exec git submodule update --init --recursive
